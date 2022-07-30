@@ -1,14 +1,20 @@
 # remix-return-navigation
 
 Create smooth return navigation with Remix. This library retains all existing state within a URL, promotes the
-use of native web practices for navigation, back navigation with fully working solutions with or without 
-Javascript enabled.
+use of native web practices for navigation, and makes return navigation easy to implement for both clients with and
+without Javascript enabled.
 
 ## Getting started
 
 ```shell
 npm i --save @briandlee/remix-return-navigation
 ```
+
+## View the Demo
+
+The live demo is available at https://remix-return-navigation.vercel.app/.
+
+The code for the demo is in the [demo directory](demo.)
 
 ### Return the current URL from your loader
 
@@ -93,6 +99,6 @@ export default function () {
 }
 ```
 
-## Known issues
+## Related issues
 
 Works around a known issue: https://github.com/remix-run/remix/issues/3510
