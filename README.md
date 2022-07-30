@@ -69,7 +69,7 @@ interface LoaderData extends URLData {
 }
 
 const loader: LoaderFunction = async ({request}) => {
-  return json<LoaderData>(withURLData(request, {user: await getUser(request)}));
+  return json<LoaderData>(withURLData(request, { user: await getUser(request) }));
 }
 ```
 
