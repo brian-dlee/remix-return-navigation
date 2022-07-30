@@ -1,0 +1,61 @@
+{
+  "name": "@briandlee/remix-return-navigation",
+  "repository": {
+    "url": "https://github.com/brian-dlee/remix-return-navigation"
+  },
+  "version": "1.0.0",
+  "description": "Create smooth return navigation using Remix",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "start": "ts-node ./src/index.ts",
+    "build": "tsc",
+    "test": "jest"
+  },
+  "keywords": [
+    "remix",
+    "navigation",
+    "referrer",
+    "referer",
+    "ssr",
+    "javascript-disabled"
+  ],
+  "author": "Brian Lee <briandl92391@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@remix-run/dev": "^1.6.6",
+    "@remix-run/eslint-config": "^1.6.6",
+    "@remix-run/node": "^1.6.6",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^17.0.45",
+    "@types/react": "^16.8.0",
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
+    "eslint": "^8.20.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.6.0",
+    "eslint-plugin-n": "^15.2.4",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.0",
+    "husky": "^7.0.4",
+    "jest": "^27.5.1",
+    "lint-staged": "^12.3.8",
+    "prettier": "^2.7.1",
+    "remix": "^1.6.6",
+    "ts-jest": "^27.1.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@remix-run/react": "^1.6.6",
+    "react": ">=16.8.0"
+  }
+}
