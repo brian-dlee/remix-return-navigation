@@ -2,7 +2,7 @@ import type { LoaderFunction } from '@remix-run/node';
 import type { URLData } from '@briandlee/remix-return-navigation';
 import { json } from '@remix-run/node';
 import { Link, useLoaderData, useLocation } from '@remix-run/react';
-import { withURLData, useReturnNavigation } from '@briandlee/remix-return-navigation';
+import { withURLData, useReturnLocation } from '@briandlee/remix-return-navigation';
 
 type LoaderData = URLData;
 
@@ -15,7 +15,7 @@ export default function () {
     url: { referrer },
   }: LoaderData = useLoaderData<LoaderData>();
   const location = useLocation();
-  const source = useReturnNavigation(location, referrer);
+  const source = useReturnLocation(referrer);
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>

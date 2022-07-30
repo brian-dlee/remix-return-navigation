@@ -23,8 +23,12 @@
             "env": {
                 "jest/globals": true
             },
-            "plugins": [
+            "extends": [
+                "@remix-run/eslint-config",
                 "@remix-run/eslint-config/jest-testing-library",
+                "prettier"
+            ],
+            "plugins": [
                 "jest",
                 "@typescript-eslint"
             ]

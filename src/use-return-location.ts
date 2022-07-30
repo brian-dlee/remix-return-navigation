@@ -1,6 +1,6 @@
 import type { To } from 'history';
-import type { Location } from '@remix-run/react';
 import { useEffect, useState } from 'react';
+import { useLocation } from "@remix-run/react";
 
 export type ReadStateFunction = (state: Record<string, unknown>) => string | null
 
@@ -22,12 +22,12 @@ export function getReturnUrl(source: string): To | null {
 
 // Due to this issue, you cannot solely rely on the referer header
 //   https://github.com/remix-run/remix/issues/3510
-export function useReturnNavigation(
-  location: Location,
+export function useReturnLocation(
   referrer: string | null,
   readState: ReadStateFunction = defaultReadState,
 ): To | null {
   const [result, setResult] = useState(referrer && getReturnUrl(referrer));
+  const location = useLocation()
 
   useEffect(() => {
     if (!location.state) {
