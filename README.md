@@ -12,7 +12,7 @@ npm i --save @briandlee/remix-return-navigation
 
 ## View the Demo
 
-The live demo is available at https://remix-return-navigation.vercel.app/.
+The live demo is available at https://remix-return-navigation.brian-dlee.dev/.
 
 The code for the demo is in the [demo directory](demo.)
 
