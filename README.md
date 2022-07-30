@@ -103,4 +103,6 @@ export default function () {
 
 Works around a known issue: https://github.com/remix-run/remix/issues/3510
 
+----
+
 Created by [me](https://brian-dlee.dev/).
