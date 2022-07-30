@@ -14,7 +14,7 @@ npm i --save @briandlee/remix-return-navigation
 
 The live demo is available at https://remix-return-navigation.brian-dlee.dev/.
 
-The code for the demo is in the [demo directory](demo.)
+The code for the demo is in the [demo directory](demo).
 
 ### Return the current URL from your loader
 
