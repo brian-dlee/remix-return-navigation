@@ -41,7 +41,7 @@ export default function () {
         link with you. Otherwise you should see a "Return" link below that will send you back to the
         link you came from.
       </p>
-      {returnLocation && <BackwardLink>Return</BackwardLink>}
+      {returnLocation && <BackwardLink className={'source'}>Return</BackwardLink>}
       <br />
       <Link to={'./..'}>Start Over</Link>
     </div>

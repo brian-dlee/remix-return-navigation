@@ -44,7 +44,9 @@ export default function Index() {
         <strong>Next</strong> navigate to the target page to view the results
       </p>
       <p>
-        <ForwardLink to={'target'}>Go to target page</ForwardLink>
+        <ForwardLink className={'target'} to={'target'}>
+          Go to target page
+        </ForwardLink>
       </p>
       <p>
         Repeat the process with and without Javascript enabled. Use the link below to reset your
