@@ -15,15 +15,13 @@ export function ForwardLink(props: ForwardLinkProps) {
   const location = useLocation();
 
   const target: Partial<Path> | null = useMemo(() => {
+    const param = props.param || options.defaultReturnLocationParam;
+
     // if the URL is relative, build a matching Partial<Path>
     if (typeof props.to === 'string' && isRelativeUrl(props.to)) {
-      return withReturnLocation(
-        relativeUrlToPath(props.to),
-        location,
-        props.param || options.defaultReturnLocationParam
-      );
+      return withReturnLocation(relativeUrlToPath(props.to), location, param);
     } else if (typeof props.to !== 'string') {
-      return withReturnLocation(props.to, location);
+      return withReturnLocation(props.to, location, param);
     } else {
       return null;
     }
