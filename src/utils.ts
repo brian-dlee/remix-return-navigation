@@ -1,11 +1,11 @@
-import type { To } from 'history';
 import type { Path } from 'history';
 
 const DEFAULT_RETURN_LOCATION_SEARCH_PARAM = 'return';
 const ABSOLUTE_URL_REGEX = /^(\w+:)?\/\/.+[^.]+\.[^.]+\//;
 
-export function getLocationFromUrl(source: string): To {
+export function getLocationFromUrl(source: string): Path {
   const url = new URL(source);
+
   return {
     pathname: url.pathname,
     hash: url.hash,
@@ -17,7 +17,7 @@ export function getReturnLocationFromSearch(search: string, param?: string) {
   const returnLocation = new URLSearchParams(search || '').get(
     param || DEFAULT_RETURN_LOCATION_SEARCH_PARAM
   );
-  console.log('getReturnLocationFromSearch::beforePartialPath', returnLocation);
+
   return returnLocation && relativeUrlToPath(returnLocation);
 }
 
@@ -48,34 +48,32 @@ export function withReturnLocation(
   returnLocation: Partial<Path>,
   param?: string
 ) {
-  const params = new URLSearchParams(path.search);
+  const returnLocationParam = param || DEFAULT_RETURN_LOCATION_SEARCH_PARAM;
   const returnLocationPathname = returnLocation.pathname || '/';
-  const returnLocationSearchParams = new URLSearchParams(returnLocation.search);
+  const returnLocationSearch = returnLocation.search || '';
 
-  returnLocationSearchParams.delete(param || DEFAULT_RETURN_LOCATION_SEARCH_PARAM);
-
-  let returnLocationSearch = '';
-  if (new Array(returnLocationSearchParams.keys()).length > 0) {
-    returnLocationSearch = `?${returnLocationSearchParams.toString()}`;
-  }
-
-  let computed = returnLocationPathname;
-
-  if (returnLocationSearch) {
-    computed += returnLocationSearch;
-  }
-
-  params.set(param || DEFAULT_RETURN_LOCATION_SEARCH_PARAM, computed);
-
-  const result: Partial<Path> = {
-    pathname: path.pathname,
-    hash: path.hash,
-    search: '',
+  return {
+    ...path,
+    search: addSearchParameter(
+      path.search || '',
+      returnLocationParam,
+      returnLocationPathname + removeSearchParameter(returnLocationSearch, returnLocationParam)
+    ),
   };
+}
 
-  if (new Array(params.keys()).length > 0) {
-    result.search = `?${params.toString()}`;
-  }
+function addSearchParameter(search: string, param: string, value: string): string {
+  const params = new URLSearchParams(search);
 
-  return result;
+  params.set(param, value);
+
+  return `?${params.toString()}`;
+}
+
+function removeSearchParameter(search: string, param: string): string {
+  const params = new URLSearchParams(search);
+
+  params.delete(param);
+
+  return new Array(params.keys()).length > 0 ? `?${params.toString()}` : '';
 }
