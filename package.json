@@ -16,7 +16,8 @@
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "format": "eslint --fix src && prettier --write src"
   },
   "keywords": [
     "remix",
