@@ -1,9 +1,9 @@
 import type { Path } from 'history';
 
 const DEFAULT_RETURN_LOCATION_SEARCH_PARAM = 'return';
-const ABSOLUTE_URL_REGEX = /^(\w+:)?\/\/.+[^.]+\.[^.]+\//;
+const ABSOLUTE_URL_REGEX = /^(\w+:(\/\/)?)?.+[^.]+\.[^.]+\/?/;
 
-export function getLocationFromUrl(source: string): Path {
+export function getPathFromUrl(source: string): Path {
   const url = new URL(source);
 
   return {
@@ -13,12 +13,10 @@ export function getLocationFromUrl(source: string): Path {
   };
 }
 
-export function getReturnLocationFromSearch(search: string, param?: string) {
-  const returnLocation = new URLSearchParams(search || '').get(
-    param || DEFAULT_RETURN_LOCATION_SEARCH_PARAM
-  );
+export function getPathFromSearch(search: string, param?: string) {
+  const url = new URLSearchParams(search || '').get(param || DEFAULT_RETURN_LOCATION_SEARCH_PARAM);
 
-  return returnLocation && relativeUrlToPath(returnLocation);
+  return url && relativeUrlToPath(url);
 }
 
 export function isRelativeUrl(url: string): boolean {
@@ -26,6 +24,10 @@ export function isRelativeUrl(url: string): boolean {
 }
 
 export function relativeUrlToPath(url: string): Path {
+  if (!isRelativeUrl(url)) {
+    throw new Error('URL cannot be absolute: ' + url);
+  }
+
   const path: Path = { pathname: '', search: '', hash: '' };
   const [head, tail] = url.split('?', 2);
 

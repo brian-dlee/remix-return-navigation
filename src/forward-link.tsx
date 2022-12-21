@@ -31,8 +31,10 @@ export function ForwardLink(props: ForwardLinkProps) {
     return <Link {...props}>{props.children}</Link>;
   }
 
+  const { to: _, ...extra } = props;
+
   return (
-    <Link {...props} to={{ ...target }}>
+    <Link {...extra} to={{ ...target }}>
       {props.children}
     </Link>
   );

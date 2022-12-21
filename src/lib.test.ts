@@ -2,7 +2,7 @@
  * @jest-environment: jsdom
  */
 
-import { withURLData } from './lib';
+import { getReturnNavigationState } from './lib';
 
 function fakeHeaders(all: Record<string, string>) {
   return {
@@ -20,14 +20,14 @@ function fakeRequest(url: string, headers: ReturnType<typeof fakeHeaders>): Requ
 }
 
 describe('lib', () => {
-  describe('withURLData', () => {
+  describe('getReturnNavigationState', () => {
     it('return url data', () => {
-      const current = 'https://mysite.com/sign-up';
+      const requestUrl = 'https://mysite.com/sign-up';
       const referrer = 'https://mysite.com/promotion-page?utm=abcdefg';
-      const request = fakeRequest(current, fakeHeaders({ referer: referrer }));
-      expect(withURLData(request, { a: 1 })).toEqual({
-        url: { current, referrer },
-        a: 1,
+      const request = fakeRequest(requestUrl, fakeHeaders({ referer: referrer }));
+      expect(getReturnNavigationState(request)).toEqual({
+        requestUrl,
+        referrer,
       });
     });
   });

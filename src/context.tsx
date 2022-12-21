@@ -2,7 +2,7 @@ import type { PropsWithChildren } from 'react';
 import * as React from 'react';
 import { createContext, useEffect, useState } from 'react';
 import type { To } from 'history';
-import { getLocationFromUrl, getReturnLocationFromSearch } from './utils';
+import { getPathFromUrl, getPathFromSearch } from './utils';
 import { useLocation } from '@remix-run/react';
 
 interface ReturnNavigationContextData {
@@ -21,7 +21,7 @@ export const ReturnNavigationContext = createContext<ReturnNavigationContextData
 
 export function ReturnNavigationContextProvider(props: Props) {
   const [returnLocation, setReturnLocation] = useState(
-    props.referrer && getLocationFromUrl(props.referrer)
+    props.referrer && getPathFromUrl(props.referrer)
   );
 
   // Due to this issue, you cannot solely rely on the referer header
@@ -29,10 +29,7 @@ export function ReturnNavigationContextProvider(props: Props) {
   const location = useLocation();
 
   useEffect(() => {
-    const returnLocation = getReturnLocationFromSearch(
-      location.search,
-      props.defaultReturnLocationParam
-    );
+    const returnLocation = getPathFromSearch(location.search, props.defaultReturnLocationParam);
 
     if (returnLocation) {
       setReturnLocation(returnLocation);
