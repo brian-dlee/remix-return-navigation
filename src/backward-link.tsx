@@ -11,5 +11,9 @@ export interface BackwardLinkProps extends Omit<LinkProps, 'to'> {
 export function BackwardLink(props: BackwardLinkProps) {
   const location = useReturnLocation() || props.fallback || '/';
 
-  return <Link to={location}>{props.children}</Link>;
+  return (
+    <Link to={location} {...props}>
+      {props.children}
+    </Link>
+  );
 }
