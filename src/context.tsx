@@ -3,7 +3,7 @@ import * as React from 'react';
 import { createContext, useEffect, useState } from 'react';
 import type { To } from 'history';
 import { getLocationFromUrl, getReturnLocationFromSearch } from './utils';
-import { useLocation, useNavigate } from '@remix-run/react';
+import { useLocation } from '@remix-run/react';
 
 interface ReturnNavigationContextData {
   returnLocation: To | null;
@@ -27,7 +27,6 @@ export function ReturnNavigationContextProvider(props: Props) {
   // Due to this issue, you cannot solely rely on the referer header
   //   https://github.com/remix-run/remix/issues/3510
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const returnLocation = getReturnLocationFromSearch(
@@ -38,7 +37,7 @@ export function ReturnNavigationContextProvider(props: Props) {
     if (returnLocation) {
       setReturnLocation(returnLocation);
     }
-  }, [location, navigate, props.defaultReturnLocationParam, props.referrer]);
+  }, [location, props.defaultReturnLocationParam, props.referrer]);
 
   return (
     <ReturnNavigationContext.Provider
