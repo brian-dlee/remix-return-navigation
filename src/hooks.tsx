@@ -1,12 +1,34 @@
 import { useContext } from 'react';
 import { ReturnNavigationContext } from './context';
 
+export function useReturnNavigation() {
+  const {
+    returnLocation,
+    currentLocation,
+    clientSideReturnLocationStorage,
+    defaultReturnLocationSearchParam,
+    defaultReturnLocationStateKey,
+    useNavigateOnHydrate,
+  } = useContext(ReturnNavigationContext);
+
+  return {
+    returnLocation,
+    currentLocation,
+    options: {
+      clientSideReturnLocationStorage,
+      defaultReturnLocationSearchParam,
+      defaultReturnLocationStateKey,
+      useNavigateOnHydrate,
+    },
+  };
+}
+
 export function useReturnLocation() {
-  const { returnLocation } = useContext(ReturnNavigationContext);
+  const { returnLocation } = useReturnNavigation();
   return returnLocation;
 }
 
 export function useReturnNavigationOptions() {
-  const { defaultReturnLocationParam } = useContext(ReturnNavigationContext);
-  return { defaultReturnLocationParam };
+  const { options } = useReturnNavigation();
+  return options;
 }

@@ -1,31 +1,42 @@
 import * as React from 'react';
 import { useMemo } from 'react';
 import type { LinkProps } from '@remix-run/react';
-import { Link, useLocation } from '@remix-run/react';
+import { Link } from '@remix-run/react';
 import type { Path } from 'history';
 import { isRelativeUrl, relativeUrlToPath, withReturnLocation } from './utils';
-import { useReturnNavigationOptions } from './hooks';
+import { useReturnNavigation } from './hooks';
 
-interface ForwardLinkProps extends LinkProps {
-  param?: string;
+interface ForwardLinkProps extends LinkProps {}
+
+interface ForwardLinkTarget {
+  to: Partial<Path>;
+  state?: Record<string, Path>;
 }
 
 export function ForwardLink(props: ForwardLinkProps) {
-  const options = useReturnNavigationOptions();
-  const location = useLocation();
+  const { currentLocation, options } = useReturnNavigation();
 
-  const target: Partial<Path> | null = useMemo(() => {
-    const param = props.param || options.defaultReturnLocationParam;
+  const target: ForwardLinkTarget | null = useMemo(() => {
+    let path: Partial<Path>;
 
     // if the URL is relative, build a matching Partial<Path>
     if (typeof props.to === 'string' && isRelativeUrl(props.to)) {
-      return withReturnLocation(relativeUrlToPath(props.to), location, param);
+      path = relativeUrlToPath(props.to);
     } else if (typeof props.to !== 'string') {
-      return withReturnLocation(props.to, location, param);
+      path = props.to;
     } else {
       return null;
     }
-  }, [props.to, props.param, options, location]);
+
+    switch (options.clientSideReturnLocationStorage) {
+      case 'searchParam':
+        return {
+          to: withReturnLocation(path, currentLocation, options.defaultReturnLocationSearchParam),
+        };
+      case 'locationState':
+        return { to: path, state: { [options.defaultReturnLocationStateKey]: currentLocation } };
+    }
+  }, [props.to, options, currentLocation]);
 
   if (target === null) {
     return <Link {...props}>{props.children}</Link>;
@@ -34,7 +45,7 @@ export function ForwardLink(props: ForwardLinkProps) {
   const { to: _, ...extra } = props;
 
   return (
-    <Link {...extra} to={{ ...target }}>
+    <Link {...extra} to={target.to} state={target.state}>
       {props.children}
     </Link>
   );

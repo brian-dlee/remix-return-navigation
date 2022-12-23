@@ -6,8 +6,6 @@ export default function () {
   const { referrer } = useRootLoaderData();
   const returnLocation = useReturnLocation();
 
-  console.log('return location in page', returnLocation);
-
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
       <h1>Return Navigation Example: Target</h1>

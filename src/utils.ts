@@ -1,7 +1,10 @@
 import type { Path } from 'history';
 
-const DEFAULT_RETURN_LOCATION_SEARCH_PARAM = 'return';
 const ABSOLUTE_URL_REGEX = /^(\w+:(\/\/)?)?.+[^.]+\.[^.]+\/?/;
+
+export function hasMatchingOrigin(a: string, b: string): boolean {
+  return new URL(a).origin.toLowerCase() === new URL(b).origin.toLowerCase();
+}
 
 export function getPathFromUrl(source: string): Path {
   const url = new URL(source);
@@ -13,10 +16,10 @@ export function getPathFromUrl(source: string): Path {
   };
 }
 
-export function getPathFromSearch(search: string, param?: string) {
-  const url = new URLSearchParams(search || '').get(param || DEFAULT_RETURN_LOCATION_SEARCH_PARAM);
+export function getPathFromSearch(search: string, param: string): Path | null {
+  const url = new URLSearchParams(search || '').get(param);
 
-  return url && relativeUrlToPath(url);
+  return url ? relativeUrlToPath(url) : null;
 }
 
 export function isRelativeUrl(url: string): boolean {
@@ -48,9 +51,9 @@ export function relativeUrlToPath(url: string): Path {
 export function withReturnLocation(
   path: Partial<Path>,
   returnLocation: Partial<Path>,
-  param?: string
-) {
-  const returnLocationParam = param || DEFAULT_RETURN_LOCATION_SEARCH_PARAM;
+  param: string
+): Partial<Path> {
+  const returnLocationParam = param;
   const returnLocationPathname = returnLocation.pathname || '/';
   const returnLocationSearch = returnLocation.search || '';
 
