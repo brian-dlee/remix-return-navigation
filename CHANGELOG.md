@@ -5,6 +5,7 @@
 **Breaking Changes**
 
 - `defaultReturnLocationParam` is not `defaultReturnLocationSearchParam`
+- `ReturnNavigationContextProvider` now requires `referrer` and `requestUrl` to work without Javascript enabled
 
 The dependence on `referrer` works well when Javascript is disabled. Therefore, more transparent
 mechanisms can be used for client-side return location storage. On top of

@@ -33,11 +33,11 @@ import {
 export const loader: LoaderFunction = async ({ request }) => {
   const state = getReturnNavigationState(request);
 
-  return json<RootLoaderData>({ referrer: state.referrer });
+  return json({ referrer: state.referrer, requestUrl: state.requestUrl });
 };
 
 export default function App() {
-  const { referrer } = useLoaderData<RootLoaderData>();
+  const { referrer, requestUrl } = useLoaderData();
   return (
     <html lang="en">
       <head>
@@ -45,7 +45,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <ReturnNavigationContextProvider referrer={referrer}>
+        <ReturnNavigationContextProvider referrer={referrer} requestUrl={requestUrl}>
           <Outlet />
         </ReturnNavigationContextProvider>
         <ScrollRestoration />
