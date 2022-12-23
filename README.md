@@ -16,86 +16,84 @@ The live demo is available at https://remix-return-navigation.brian-dlee.dev/.
 
 The code for the demo is in the [demo directory](demo).
 
-### Return the current URL from your loader
+### Install the `ReturnNavigationContext`
 
-> Note: If you don't do this, it will only work when Javascript is enabled
+Installing the context allows the application to encapsulate the server provided
+referrer as we as listening for client-side navigations. The context must be installed so
+that the `returnLocation` will be computed and available to `ForwardLink` components.
 
-```typescript
-import type { LoaderFunction } from "@remix-run/node";
-import { json } from '@remix-run/node'
-import { URLData, withURLData } from "@briandlee/remix-return-navigation";
+```typescript jsx
+import type { LoaderFunction } from '@remix-run/node';
+import { json } from '@remix-run/node';
+import {
+  getReturnNavigationState,
+  ReturnNavigationContextProvider,
+} from '@briandlee/remix-return-navigation';
 
-interface User {
-  id: number;
-  displayName: string;
-}
+export const loader: LoaderFunction = async ({ request }) => {
+  const state = getReturnNavigationState(request);
 
-interface LoaderData extends URLData {
-  user: User;
-}
+  return json<RootLoaderData>({ referrer: state.referrer });
+};
 
-const loader: LoaderFunction = async ({ request }) => {
-  return json<LoaderData>(withURLData(request, { user: await getUser(request) }));
+export default function App() {
+  const { referrer } = useLoaderData<RootLoaderData>();
+  return (
+    <html lang="en">
+      <head>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <ReturnNavigationContextProvider referrer={referrer}>
+          <Outlet />
+        </ReturnNavigationContextProvider>
+        <ScrollRestoration />
+        <Scripts />
+        <LiveReload />
+      </body>
+    </html>
+  );
 }
 ```
 
-### Add source to your internal `Link`s state
+### Using `ForwardLink`
+
+Add a `ForwardLink` to automatically add a return location to a link.
+
+> _Note: `ForwardLink` wraps `Link` from `@remix-run/react`. It only adds the current location as a search param to enable return navigation._
 
 ```typescript jsx
-import { Link } from '@remix-run/react'
-import { useCurrentLocation } from "@briandlee/remix-return-navigation";
+import { ForwardLink } from '@briandlee/remix-return-navigation';
 
-export default function () {
-  const { url: { current }, user } = useLoaderData<LoaderData>();
-  const source = useCurrentLocation(current);
-
+export default function SourcePage() {
   return (
     <div>
       <h1>Hello, {user.displayName}</h1>
-      <Link to={"target"} state={{ source }}>Go</Link>
+      <ForwardLink to={'target'}>Go</ForwardLink>
     </div>
-  )
+  );
 }
 ```
 
-### Return the referrer from your loader
+### Using `BackwardLink`
 
-```typescript
-import type { LoaderFunction } from "@remix-run/node";
-import { json } from '@remix-run/node'
-import { URLData, withURLData } from "@briandlee/remix-return-navigation";
+Add a `BackwardLink` to add a link to return the user to the previous location.
 
-interface User {
-  id: number;
-  displayName: string;
-}
-
-interface LoaderData extends URLData {
-  user: User;
-}
-
-const loader: LoaderFunction = async ({request}) => {
-  return json<LoaderData>(withURLData(request, { user: await getUser(request) }));
-}
-```
-
-
-### Use the referrer and location state to compute the return link
+> _Note: `BackwardLink` also wraps `Link` from `@remix-run/react`, but it does not accept `to` since it generates it from the current return location._
 
 ```typescript jsx
-import { Link } from '@remix-run/react'
-import { useReturnLocation } from "@briandlee/remix-return-navigation";
+import type { LoaderFunction } from '@remix-run/node';
+import { json } from '@remix-run/node';
+import { BackwardLink } from '@briandlee/remix-return-navigation';
 
-export default function () {
-  const { url: { referrer }, user } = useLoaderData<LoaderData>();
-  const source = useReturnLocation(referrer);
-
+export default function TargetPage() {
   return (
     <div>
       <h1>Hello, {user.displayName}</h1>
-      <Link to={source}>Return</Link>
+      <BackwardLink fallback="/profile">Return</Link>
     </div>
-  )
+  );
 }
 ```
 
@@ -103,6 +101,6 @@ export default function () {
 
 Works around a known issue: https://github.com/remix-run/remix/issues/3510
 
-----
+---
 
 Created by [me](https://brian-dlee.dev/).
