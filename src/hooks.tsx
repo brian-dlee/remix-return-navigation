@@ -8,7 +8,7 @@ export function useReturnNavigation() {
     clientSideReturnLocationStorage,
     defaultReturnLocationSearchParam,
     defaultReturnLocationStateKey,
-    useNavigateOnHydrate,
+    shouldUseNavigateOnHydrate,
   } = useContext(ReturnNavigationContext);
 
   return {
@@ -18,7 +18,7 @@ export function useReturnNavigation() {
       clientSideReturnLocationStorage,
       defaultReturnLocationSearchParam,
       defaultReturnLocationStateKey,
-      useNavigateOnHydrate,
+      shouldUseNavigateOnHydrate,
     },
   };
 }

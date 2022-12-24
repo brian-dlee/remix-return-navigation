@@ -4,7 +4,7 @@ export interface OptionsCookieData {
   clientSideReturnLocationStorage: string;
   defaultReturnLocationStateKey: string;
   defaultReturnLocationSearchParam: string;
-  useNavigateOnHydrate: boolean;
+  shouldUseNavigateOnHydrate: boolean;
 }
 
 type RequestOrSession = Request | Session;
@@ -28,7 +28,7 @@ export async function getOptionsCookieData(requestOrSession: Request): Promise<O
       session.get('clientSideReturnLocationStorage') || 'locationState',
     defaultReturnLocationSearchParam: session.get('defaultReturnLocationSearchParam') || 'return',
     defaultReturnLocationStateKey: session.get('defaultReturnLocationStateKey') || 'returnLocation',
-    useNavigateOnHydrate: session.get('useNavigateOnHydrate') !== false,
+    shouldUseNavigateOnHydrate: session.get('shouldUseNavigateOnHydrate') !== false,
   };
 }
 
@@ -50,8 +50,8 @@ export async function setOptionsCookieData(
     session.set('defaultReturnLocationStateKey', data.defaultReturnLocationStateKey);
   }
 
-  if ('useNavigateOnHydrate' in data) {
-    session.set('useNavigateOnHydrate', data.useNavigateOnHydrate);
+  if ('shouldUseNavigateOnHydrate' in data) {
+    session.set('shouldUseNavigateOnHydrate', data.shouldUseNavigateOnHydrate);
   }
 
   return optionsCookieStorage.commitSession(session);

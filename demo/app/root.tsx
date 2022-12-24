@@ -45,7 +45,7 @@ export default function App() {
           }
           defaultReturnLocationSearchParam={options.defaultReturnLocationSearchParam}
           defaultReturnLocationStateKey={options.defaultReturnLocationStateKey}
-          useNavigateOnHydrate={options.useNavigateOnHydrate}
+          shouldUseNavigateOnHydrate={options.shouldUseNavigateOnHydrate}
         >
           <Outlet />
         </ReturnNavigationContextProvider>

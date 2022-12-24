@@ -5,7 +5,6 @@ const packagePath = path.resolve('demo', 'node_modules', '@briandlee', 'remix-re
 
 if (!fs.existsSync(packagePath)) {
   fs.mkdirSync(packagePath);
-  // fs.unlinkSync(packagePath, { recursive: true });
 }
 
 fs.copySync(path.resolve('dist'), path.resolve(packagePath, 'dist'), { overwrite: true });

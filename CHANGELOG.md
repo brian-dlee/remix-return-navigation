@@ -13,6 +13,9 @@ optimizing the context and rendering of the `BackwardLink` and `ForwardLink`
 components, this release reintroduces location state storage and the configuration
 options that accompany it.
 
+Also, `BackwardLink` components will automatically fallback to `navigate(-1)` when possible in an attempt to
+utilize bfcache. This can be disabled by a configuration option.
+
 ## 1.1.0 - Use search parameters for return location storage
 
 **Breaking Changes**

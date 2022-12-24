@@ -48,7 +48,7 @@ export const action: ActionFunction = async ({ request }) => {
     clientSideReturnLocationStorage: updatedOptions.clientSideReturnLocationStorage,
     defaultReturnLocationSearchParam: updatedOptions.defaultReturnLocationSearchParam.trim(),
     defaultReturnLocationStateKey: updatedOptions.defaultReturnLocationStateKey.trim(),
-    useNavigateOnHydrate: !!updatedOptions.useNavigateOnHydrate,
+    shouldUseNavigateOnHydrate: !!updatedOptions.shouldUseNavigateOnHydrate,
   };
 
   return json(
@@ -132,8 +132,8 @@ export default function Index() {
             Use Back Navigation When Available:
             <input
               type="checkbox"
-              name="useNavigateOnHydrate"
-              defaultChecked={options.useNavigateOnHydrate}
+              name="shouldUseNavigateOnHydrate"
+              defaultChecked={options.shouldUseNavigateOnHydrate}
             />
           </label>
         </div>

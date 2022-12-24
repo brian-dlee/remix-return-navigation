@@ -7,7 +7,7 @@ import { getPathFromUrl, getPathFromSearch, hasMatchingOrigin } from './utils';
 import { useLocation, useTransition } from '@remix-run/react';
 
 interface ReturnNavigationOptions {
-  useNavigateOnHydrate: boolean;
+  shouldUseNavigateOnHydrate: boolean;
   defaultReturnLocationSearchParam: string;
   defaultReturnLocationStateKey: string;
   clientSideReturnLocationStorage: 'searchParam' | 'locationState';
@@ -37,7 +37,7 @@ type ReturnNavigationContextProps = PropsWithChildren<
 const defaultValue: ReturnNavigationContextData = {
   returnLocation: null,
   currentLocation: { pathname: '/', search: '', hash: '' },
-  useNavigateOnHydrate: true,
+  shouldUseNavigateOnHydrate: true,
   defaultReturnLocationSearchParam: 'return',
   defaultReturnLocationStateKey: 'returnLocation',
   clientSideReturnLocationStorage: 'locationState',
@@ -71,9 +71,9 @@ export function ReturnNavigationContextProvider(props: ReturnNavigationContextPr
         props.defaultReturnLocationSearchParam || defaultValue.defaultReturnLocationSearchParam,
       defaultReturnLocationStateKey:
         props.defaultReturnLocationStateKey || defaultValue.defaultReturnLocationStateKey,
-      useNavigateOnHydrate: resolveBoolean(
-        props.useNavigateOnHydrate,
-        defaultValue.useNavigateOnHydrate
+      shouldUseNavigateOnHydrate: resolveBoolean(
+        props.shouldUseNavigateOnHydrate,
+        defaultValue.shouldUseNavigateOnHydrate
       ),
     }),
     [props]
@@ -107,7 +107,7 @@ export function ReturnNavigationContextProvider(props: ReturnNavigationContextPr
         clientSideReturnLocationStorage: options.clientSideReturnLocationStorage,
         defaultReturnLocationSearchParam: options.defaultReturnLocationSearchParam,
         defaultReturnLocationStateKey: options.defaultReturnLocationStateKey,
-        useNavigateOnHydrate: options.useNavigateOnHydrate,
+        shouldUseNavigateOnHydrate: options.shouldUseNavigateOnHydrate,
         returnLocation: state.returnLocation,
         currentLocation: state.currentLocation,
       }}

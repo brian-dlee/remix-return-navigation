@@ -12,8 +12,7 @@ export interface BackwardLinkProps extends Omit<LinkProps, 'to'> {
 type OnClickCallback = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
 
 export function BackwardLink(props: BackwardLinkProps) {
-  const { useNavigateOnHydrate } = useReturnNavigationOptions();
-  const [navigateEnabled, setNavigateEnabled] = useState(false);
+  const { shouldUseNavigateOnHydrate } = useReturnNavigationOptions();
   const returnLocation = useReturnLocation();
   const navigate = useNavigate();
 
@@ -21,18 +20,12 @@ export function BackwardLink(props: BackwardLinkProps) {
 
   const onClick: OnClickCallback = useCallback(
     function (e) {
-      navigateEnabled && e.preventDefault();
+      shouldUseNavigateOnHydrate && e.preventDefault();
       props.onClick && props.onClick(e);
-      navigateEnabled && navigate(-1);
+      shouldUseNavigateOnHydrate && navigate(-1);
     },
-    [props, navigateEnabled, navigate]
+    [props, navigate, shouldUseNavigateOnHydrate]
   );
-
-  useEffect(() => {
-    if (useNavigateOnHydrate && !navigateEnabled) {
-      setNavigateEnabled(true);
-    }
-  }, [navigateEnabled, useNavigateOnHydrate]);
 
   return (
     <Link onClick={onClick} to={location} {...props}>
