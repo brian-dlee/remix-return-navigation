@@ -13,6 +13,7 @@ import {
   useLoaderData,
 } from '@remix-run/react';
 import { RootLoaderData } from '~/loaders/root';
+import { getOptionsCookieData } from './session.server';
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
@@ -22,12 +23,13 @@ export const meta: MetaFunction = () => ({
 
 export const loader: LoaderFunction = async ({ request }) => {
   const state = getReturnNavigationState(request);
+  const options = await getOptionsCookieData(request);
 
-  return json<RootLoaderData>({ referrer: state.referrer });
+  return json<RootLoaderData>({ referrer: state.referrer, requestUrl: state.requestUrl, options });
 };
 
 export default function App() {
-  const { referrer } = useLoaderData<RootLoaderData>();
+  const { referrer, requestUrl, options } = useLoaderData<RootLoaderData>();
   return (
     <html lang="en">
       <head>
@@ -35,7 +37,16 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <ReturnNavigationContextProvider referrer={referrer}>
+        <ReturnNavigationContextProvider
+          referrer={referrer}
+          requestUrl={requestUrl}
+          clientSideReturnLocationStorage={
+            options.clientSideReturnLocationStorage as 'searchParam' | 'locationState' | undefined
+          }
+          defaultReturnLocationSearchParam={options.defaultReturnLocationSearchParam}
+          defaultReturnLocationStateKey={options.defaultReturnLocationStateKey}
+          shouldUseNavigateOnHydrate={options.shouldUseNavigateOnHydrate}
+        >
           <Outlet />
         </ReturnNavigationContextProvider>
         <ScrollRestoration />

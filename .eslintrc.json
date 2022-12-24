@@ -19,6 +19,12 @@
     },
     "overrides": [
         {
+            "files": ["rollup.config.js"],
+            "env": {
+                "node": true
+            }
+        },
+        {
             "files": ["*.test.ts"],
             "env": {
                 "jest/globals": true

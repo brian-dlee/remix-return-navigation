@@ -48,7 +48,10 @@ describe('utils', () => {
 
     it('throws for absolute urls', () => {
       expect(() =>
-        getPathFromSearch(`?return=${encodeURIComponent('https://mysite.com/page1/login?u=new')}`)
+        getPathFromSearch(
+          `?return=${encodeURIComponent('https://mysite.com/page1/login?u=new')}`,
+          'return'
+        )
       ).toThrowError(/absolute/);
     });
   });
