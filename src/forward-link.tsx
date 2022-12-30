@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useMemo } from 'react';
 import type { LinkProps } from '@remix-run/react';
-import { Link } from '@remix-run/react';
+import { Link } from './link';
 import type { Path } from 'history';
 import { isRelativeUrl, relativeUrlToPath, withReturnLocation } from './utils';
 import { useReturnNavigation } from './hooks';

@@ -1,9 +1,10 @@
-import type { LinkProps } from '@remix-run/react';
-import { Link, useNavigate } from '@remix-run/react';
+import { useNavigate } from '@remix-run/react';
 import type { To } from 'history';
 import * as React from 'react';
 import { useCallback } from 'react';
 import { useReturnLocation, useReturnNavigationOptions } from './hooks';
+import type { LinkProps } from './link';
+import { Link } from './link';
 
 export interface BackwardLinkProps extends Omit<LinkProps, 'to'> {
   fallback?: To;

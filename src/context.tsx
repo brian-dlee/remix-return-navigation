@@ -1,16 +1,27 @@
-import type { PropsWithChildren } from 'react';
+import type { ReactNode } from 'react';
 import * as React from 'react';
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { createContext, useEffect, useReducer } from 'react';
 import type { Path } from 'history';
 import { getPathFromUrl, getPathFromSearch, hasMatchingOrigin } from './utils';
 import { useLocation, useTransition } from '@remix-run/react';
 
-interface ReturnNavigationOptions {
+export interface ReturnNavigationOptions {
   shouldUseNavigateOnHydrate: boolean;
   defaultReturnLocationSearchParam: string;
   defaultReturnLocationStateKey: string;
   clientSideReturnLocationStorage: 'searchParam' | 'locationState';
+}
+
+export interface ReturnNavigationContextData extends ReturnNavigationOptions {
+  returnLocation: Path | null;
+  currentLocation: Path;
+}
+
+export interface ReturnNavigationContextProps extends Partial<ReturnNavigationOptions> {
+  children?: ReactNode | undefined;
+  referrer: string | null;
+  requestUrl: string;
 }
 
 type ReturnNavigationReducerAction =
@@ -22,25 +33,22 @@ interface ReturnNavigationReducerState {
   currentLocation: Path;
 }
 
-interface ReturnNavigationContextData extends ReturnNavigationOptions {
-  returnLocation: Path | null;
-  currentLocation: Path;
+interface ReturnNavigationContextProviderProps {
+  children?: ReactNode | undefined;
+  value: ReturnNavigationContextData;
 }
 
-type ReturnNavigationContextProps = PropsWithChildren<
-  Partial<ReturnNavigationOptions> & {
-    referrer: string | null;
-    requestUrl: string;
-  }
->;
-
-const defaultValue: ReturnNavigationContextData = {
-  returnLocation: null,
-  currentLocation: { pathname: '/', search: '', hash: '' },
+export const defaultReturnNavigationOptions: ReturnNavigationOptions = {
   shouldUseNavigateOnHydrate: true,
   defaultReturnLocationSearchParam: 'return',
   defaultReturnLocationStateKey: 'returnLocation',
   clientSideReturnLocationStorage: 'locationState',
+};
+
+const defaultValue: ReturnNavigationContextData = {
+  returnLocation: null,
+  currentLocation: { pathname: '/', search: '', hash: '' },
+  ...defaultReturnNavigationOptions,
 };
 
 export const ReturnNavigationContext = createContext<ReturnNavigationContextData>(defaultValue);
@@ -102,7 +110,7 @@ export function ReturnNavigationContextProvider(props: ReturnNavigationContextPr
   }, [transition, location, options]);
 
   return (
-    <ReturnNavigationContext.Provider
+    <Provider
       value={{
         clientSideReturnLocationStorage: options.clientSideReturnLocationStorage,
         defaultReturnLocationSearchParam: options.defaultReturnLocationSearchParam,
@@ -113,9 +121,19 @@ export function ReturnNavigationContextProvider(props: ReturnNavigationContextPr
       }}
     >
       {props.children}
-    </ReturnNavigationContext.Provider>
+    </Provider>
   );
 }
+
+const Provider = memo(function Provider(
+  props: ReturnNavigationContextProviderProps & { children: ReactNode }
+) {
+  return (
+    <ReturnNavigationContext.Provider value={props.value}>
+      {props.children}
+    </ReturnNavigationContext.Provider>
+  );
+});
 
 function resolveBoolean(...values: unknown[]): boolean {
   for (const value of values) {
