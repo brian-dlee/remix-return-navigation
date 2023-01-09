@@ -21,11 +21,11 @@ export function BackwardLink(props: BackwardLinkProps) {
 
   const onClick: OnClickCallback = useCallback(
     function (e) {
-      shouldUseNavigateOnHydrate && returnLocation && e.preventDefault();
+      shouldUseNavigateOnHydrate && e.preventDefault();
       props.onClick && props.onClick(e);
-      shouldUseNavigateOnHydrate && returnLocation && navigate(-1);
+      shouldUseNavigateOnHydrate && navigate(-1);
     },
-    [props, navigate, returnLocation, shouldUseNavigateOnHydrate]
+    [props, navigate, shouldUseNavigateOnHydrate]
   );
 
   return (
