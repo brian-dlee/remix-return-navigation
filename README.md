@@ -91,9 +91,38 @@ export default function TargetPage() {
   return (
     <div>
       <h1>Hello, {user.displayName}</h1>
-      <BackwardLink fallback="/profile">Return</Link>
+      <BackwardLink fallback="/profile" fallbackContent={"Go to Profile"}>
+        Return
+      </BackwardLink>
     </div>
   );
+}
+```
+
+#### Fully customize the `BackwardLink` content using a FunctionalComponent
+
+```typescript jsx
+import type {LoaderFunction} from '@remix-run/node';
+import {json} from '@remix-run/node';
+import {BackwardLink, BackwardLinkFC} from '@briandlee/remix-return-navigation';
+
+export default function TargetPage() {
+  return (
+    <div>
+      <h1>Hello, {user.displayName}</h1>
+      <BackwardLink render={LinkContent} />
+    </div>
+  );
+}
+
+const LinkContent: BackwardLinkFC = ({ returnLocation }) => {
+  if (returnLocation) {
+    return (
+      <><Icon name={'back'} /> Go back to {returnLocation.pathname}</>
+    )
+    
+    return <><Icon name={'home'} /> Go home</>
+  }
 }
 ```
 
