@@ -1,4 +1,8 @@
-import { useReturnLocation, BackwardLink } from '@briandlee/remix-return-navigation';
+import {
+  useReturnLocation,
+  BackwardLink,
+  BackwardLinkFC,
+} from '@briandlee/remix-return-navigation';
 import { Link } from '@remix-run/react';
 import { useRootLoaderData } from '~/loaders/root';
 
@@ -33,15 +37,41 @@ export default function () {
       <hr />
       <p>Using the content extracted (shown above) the return link is generated.</p>
       <p>
-        If you do not see "Return" that means you got to this page without any information that
-        could return you. You can cause this by focusing the address bar and hitting enter. This is
-        essentially what would happen if you navigated here all on your own or if someone shared a
-        link with you. Otherwise you should see a "Return" link below that will send you back to the
-        link you came from.
+        If you do not see a link that says "Return Home" that means you got to this page without any
+        information that could return you. You can cause this by opening a new tab and pasting the
+        URL to this page in the address bar. This is essentially what would happen if someone shared
+        a link with you. Otherwise you should see a "Return" link below that will send you back to
+        the link you came from.
       </p>
-      {returnLocation && <BackwardLink className={'source'}>Return</BackwardLink>}
-      <br />
-      <Link to={'./..'}>Start Over</Link>
+      <h4>
+        Examples of: <code>BackwarkLink</code>
+      </h4>
+      <p>
+        A highly customizable version using <code>render</code>:{' '}
+        <BackwardLink className={'source'} render={DynamicBackwardLinkContent} />
+      </p>
+
+      <p>
+        A simpler version with <code>fallbackContent</code>:{' '}
+        <BackwardLink className={'source'} fallbackContent={'Return home'}>
+          Return to previous location
+        </BackwardLink>
+      </p>
+
+      <p>
+        No fallback: <BackwardLink className={'source'}>Back</BackwardLink>
+      </p>
+
+      <hr />
+
+      <Link to={'/'}>Start Over</Link>
     </div>
   );
 }
+
+const DynamicBackwardLinkContent: BackwardLinkFC = ({ returnLocation }) => {
+  if (!returnLocation) {
+    return 'Return home (no return location)';
+  }
+  return `Return to ${returnLocation.pathname}${returnLocation.search}${returnLocation.hash}`;
+};
