@@ -3,7 +3,7 @@ import * as React from 'react';
 import { memo, useMemo } from 'react';
 import { createContext, useEffect, useReducer } from 'react';
 import type { Path } from 'history';
-import { getPathFromUrl, getPathFromSearch, hasMatchingOrigin } from './utils';
+import { getPathFromUrl, getPathFromSearch, isValidReferrer } from './utils';
 import { useLocation, useTransition } from '@remix-run/react';
 
 export interface ReturnNavigationOptions {
@@ -59,7 +59,7 @@ export function ReturnNavigationContextProvider(props: ReturnNavigationContextPr
     { referrer: props.referrer, requestUrl: props.requestUrl },
     (initial) => ({
       returnLocation:
-        props.referrer && hasMatchingOrigin(props.requestUrl, props.referrer)
+        props.referrer && isValidReferrer(props.requestUrl, props.referrer)
           ? getPathFromUrl(props.referrer)
           : null,
       currentLocation: getPathFromUrl(initial.requestUrl),

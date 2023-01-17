@@ -2,8 +2,13 @@ import type { Path } from 'history';
 
 const ABSOLUTE_URL_REGEX = /^(\w+:(\/\/)?)?.+[^.]+\.[^.]+\/?/;
 
-export function hasMatchingOrigin(a: string, b: string): boolean {
-  return new URL(a).origin.toLowerCase() === new URL(b).origin.toLowerCase();
+export function isValidReferrer(requestUrl: string, referrer: string): boolean {
+  const [a, b] = [new URL(requestUrl), new URL(referrer)];
+  const originMatch = a.origin.toLowerCase() === b.origin.toLowerCase();
+  const pathnameMatch = a.pathname.toLowerCase() === b.pathname.toLowerCase();
+  const searchMatch = a.search.toLowerCase() === b.pathname.toLowerCase();
+
+  return originMatch && (!pathnameMatch || !searchMatch);
 }
 
 export function getPathFromUrl(source: string): Path {
