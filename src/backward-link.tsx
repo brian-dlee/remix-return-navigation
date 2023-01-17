@@ -28,6 +28,7 @@ export function BackwardLink(props: BackwardLinkProps) {
   const returnLocation = useReturnLocation();
   const navigate = useNavigate();
 
+  const { fallback, fallbackContent, render, ...linkProps } = props;
   const location = returnLocation || props.fallback || '/';
 
   const onClick: OnClickCallback = useCallback(
@@ -40,11 +41,11 @@ export function BackwardLink(props: BackwardLinkProps) {
   );
 
   return (
-    <Link onClick={onClick} to={location} {...props}>
+    <Link onClick={onClick} to={location} {...linkProps}>
       <BackwardLinkInner
         children={props.children}
-        fallbackContent={props.fallbackContent}
-        render={props.render}
+        fallbackContent={fallbackContent}
+        render={render}
         returnLocation={returnLocation}
       />
     </Link>
