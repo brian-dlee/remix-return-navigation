@@ -3,12 +3,13 @@ import {
   BackwardLink,
   BackwardLinkFC,
 } from '@briandlee/remix-return-navigation';
-import { Link } from '@remix-run/react';
+import { Link, useLocation } from '@remix-run/react';
 import { useRootLoaderData } from '~/loaders/root';
 
 export default function () {
   const { referrer } = useRootLoaderData();
   const returnLocation = useReturnLocation();
+  const location = useLocation();
 
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
@@ -31,9 +32,12 @@ export default function () {
       <p>
         <strong>Return location:</strong>
       </p>
-      <pre style={{ fontFamily: 'monospace', fontSize: 12 }}>
-        <pre>{JSON.stringify(returnLocation)}</pre>
-      </pre>
+      <pre style={{ fontFamily: 'monospace', fontSize: 12 }}>{JSON.stringify(returnLocation)}</pre>
+      <p>For transparency, the result of `useLocation` is also shown below.</p>
+      <p>
+        <strong>Location:</strong>
+      </p>
+      <pre style={{ fontFamily: 'monospace', fontSize: 12 }}>{JSON.stringify(location)}</pre>
       <hr />
       <p>Using the content extracted (shown above) the return link is generated.</p>
       <p>
