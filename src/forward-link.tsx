@@ -45,7 +45,7 @@ export function ForwardLink(props: ForwardLinkProps) {
   const { to: _, ...extra } = props;
 
   return (
-    <Link {...extra} to={target.to} state={target.state}>
+    <Link {...extra} to={target.to} state={{ ...props.state, ...target.state }}>
       {props.children}
     </Link>
   );
