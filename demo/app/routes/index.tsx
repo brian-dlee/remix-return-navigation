@@ -90,7 +90,7 @@ export default function Index() {
         <strong>Next</strong> navigate to the target page to view the results
       </p>
       <p>
-        <ForwardLink className={'target'} to={'target'}>
+        <ForwardLink className={'target'} to={'target'} state={{ color: 'blue' }}>
           Go to target page
         </ForwardLink>
       </p>
