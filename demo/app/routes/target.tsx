@@ -51,7 +51,7 @@ export default function () {
         Examples of: <code>BackwarkLink</code>
       </h4>
       <p>
-        A highly customizable version using <code>render</code>:{' '}
+        A fully customizable version using <code>render</code>:{' '}
         <BackwardLink className={'source'} render={DynamicBackwardLinkContent} />
       </p>
 
